@@ -1,0 +1,235 @@
+html,
+body {
+	background: #F1F3F4;
+}
+
+p,
+h4 {
+	margin: 0;
+}
+
+.box-shadow {
+	box-shadow: 0px 1px 4px 0px rgba(0, 21, 41, 0.12);
+}
+
+/* element ui */
+/* el-pagination */
+.my-pages {
+	padding-bottom: 48px;
+	padding-right: 50px;
+	text-align: right;
+}
+
+.my-pages .el-pagination.is-background .btn-next,
+.el-pagination.is-background .btn-prev,
+.el-pagination.is-background .el-pager li {
+	margin: 0 5px;
+	background-color: transparent;
+	color: rgba(0, 0, 0, 0.65);
+	min-width: 30px;
+	border-radius: 4px;
+	border: 1px solid #D9D9D9;
+}
+
+.my-pages .el-pagination__jump {
+	margin-left: 0;
+}
+
+.my-pages .el-pagination.is-background .el-pager li:not(.disabled).active {
+	border: none;
+}
+
+/* table hover背景色 */
+.el-table tbody .el-table__row:hover>td {
+	background-color: #E6F7FF;
+	color: #000;
+}
+
+/* table表头 */
+.el-table th {
+	background: #FAFAFA;
+	font-weight: 600;
+	color: rgba(0, 0, 0, .85);
+}
+
+/* table 状态点 */
+.show-circle {
+	display: inline-block;
+	vertical-align: middle;
+	width: 6px;
+	height: 6px;
+	margin-right: 6px;
+	border-radius: 50%;
+	background: #1890FF;
+}
+
+.show-circle.error {
+	background: #F5222D;
+}
+
+/* el-link 右边框 */
+.el-link.el-border-right {
+	padding-right: 10px;
+	border-right: 1px solid #E9E9E9;
+	margin-right: 8px
+}
+
+/* 图片缩略图 */
+.img-thumbnail {
+	width: 104px;
+	height: 104px;
+	padding: 8px;
+	box-sizing: border-box;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	border-radius: 4px;
+}
+
+/* 消息提示框去除背景 */
+.v-modal {
+	background: transparent;
+}
+
+/* element ui end*/
+
+/* 布局 */
+.flex {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.space-around {
+	justify-content: space-around !important;
+}
+
+.center {
+	text-align: center;
+}
+
+.block {
+	display: block;
+}
+
+.inline-block {
+	display: inline-block;
+}
+
+/* 边距 */
+.margin24 {
+	margin: 24px;
+}
+
+.padding24 {
+	padding: 24px;
+}
+
+.margingL40 {
+	margin-left: 40px;
+}
+
+.marginR20 {
+	margin-right: 20px;
+}
+
+.marginB15 {
+	margin-bottom: 15px;
+}
+
+.margingL40 {
+	margin-left: 40px;
+}
+
+.marginT10 {
+	margin-top: 10px;
+}
+
+.padding24 {
+	padding: 24px;
+}
+
+.padding32 {
+	padding: 32px;
+}
+
+/* 背景色 */
+.bg-white {
+	background: white;
+}
+
+/* 字体大小 */
+.fontS12 {
+	font-size: 12px;
+}
+
+.fontS14 {
+	font-size: 14px;
+}
+
+.fontS12 {
+	font-size: 12px;
+}
+
+.fontS16 {
+	font-size: 16px;
+}
+
+.fontS18 {
+	font-size: 18px;
+}
+
+.fontS16 {
+	font-size: 16px;
+}
+
+/* 颜色 */
+.color65 {
+	color: rgba(0, 0, 0, .65);
+}
+
+.color85 {
+	color: rgba(0, 0, 0, 0.85)
+}
+
+.color90 {
+	color: #909399;
+}
+
+.colorFail {
+	color: #F55757;
+}
+
+/* 加粗 */
+.fontW500 {
+	font-weight: bold;
+}
+
+
+.tac {
+	text-align: center;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+/*状态标注圈*/
+.stateCommon{
+	width:6px;
+	height:6px;
+	background:rgba(0,0,0,0.25);
+	margin-right: 5px;
+	border-radius: 50%;
+}
+
+.stateBgRed{
+	background: #F5222D;
+}
+.stateBgGreen{
+	background: #52C41A;
+}
+.stateBgDef{
+	background:rgba(0,0,0,0.25);
+}
+.stateBgBule{
+	background: #1890FF;
+}

@@ -1,0 +1,23 @@
+{
+  "id": "1505007",
+  "name": "显示",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "3032219",
+      "name": "睁眼",
+      "font_class": "open-eye",
+      "unicode": "e79c",
+      "unicode_decimal": 59292
+    },
+    {
+      "icon_id": "7310555",
+      "name": "闭眼",
+      "font_class": "biyan",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    }
+  ]
+}

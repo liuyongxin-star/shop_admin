@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>logo.ico">
+    <title>管理后台</title>
+
+
+
+    
+    <title>yigongpin_system</title>
+  </head>
+  <body>
+      <!-- <div class="Maintain">
+        <h1>页面维护中，请等待通知</h1>
+      </div> -->
+    <noscript>
+      <strong>We're sorry but manger doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+   
+    <!-- min版本在dev环境下不支持devtool -->
+     <!--<script src= 'https://unpkg.com/vue@2.6.10/dist/vue.min.js'></script>-->
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+    <script src= 'https://unpkg.com/vue-router@3.0.6/dist/vue-router.min.js'></script>
+    <script src= 'https://unpkg.com/vuex@3.1.1/dist/vuex.min.js'></script>
+    <script src= 'https://unpkg.com/axios@0.19.0/dist/axios.min.js'></script>
+    <script src='https://unpkg.com/element-ui@2.10.1/lib/index.js'></script>
+  </body>
+  <style scoped>
+  .Maintain{
+    width: 100%;
+    height: 1600px;
+    position: absolute;
+    top: 0;
+    background-color: rgba(0,0,0,0.3);
+    z-index: 999999;
+    text-align: center;
+  }
+  .Maintain h1{
+    margin: 0 auto;
+   text-align: center;
+  }
+  
+  </style>
+</html>
