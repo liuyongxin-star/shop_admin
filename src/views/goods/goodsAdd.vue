@@ -4,23 +4,33 @@
     <!--spu设置-->
     <el-form ref="form" :model="spuList" label-width="120px" :rules="rules">
       <h3>基本信息</h3>
-      <el-form-item label="商品分类" class="item-input">
-        <el-cascader
-          :show-all-levels="false"
-          prop="category_id"
-          ref="myCategory"
-          :placeholder="defaultname"
-          v-model="category_id"
-          @change="onCategoryChange"
-          :props="classify"
-        ></el-cascader>
-        <!-- 多级下拉菜单-->
-      </el-form-item>
+  
       <el-form-item label="商品名称" prop="name" class="item-input">
         <el-input v-model="spuList.name" size="small"></el-input>
       </el-form-item>
-      <el-form-item label="数量单位" prop="name" class="item-input">
-        <el-input v-model="spuList.item_pcs" size="small"></el-input>
+       <el-form-item label="规格" prop="name" class="item-input">
+        <el-input v-model="spuList.attr" size="small"></el-input>
+      </el-form-item>
+       <el-form-item label="价格1" prop="name" class="item-input">
+        <el-input v-model="spuList.price1" size="small"></el-input>
+      </el-form-item>
+       <el-form-item label="单位1" prop="name" class="item-input">
+        <el-input v-model="spuList.unit1" size="small"></el-input>
+      </el-form-item>
+       <el-form-item label="价格2" prop="name" class="item-input">
+        <el-input v-model="spuList.price2" size="small"></el-input>
+      </el-form-item>
+       <el-form-item label="单位2" prop="name" class="item-input">
+        <el-input v-model="spuList.unit2" size="small"></el-input>
+      </el-form-item>
+           <el-form-item label="商品品牌" class="item-input" prop="name">
+        <el-input v-model="spuList.brand" size="small"></el-input>
+      </el-form-item>
+           <el-form-item label="单位比率" class="item-input" prop="name">
+        <el-input v-model="spuList.unit_rate" size="small"></el-input>
+      </el-form-item>
+      <el-form-item label="进货价" class="item-input" prop="name">
+        <el-input v-model="spuList.purchase_price" size="small"></el-input>
       </el-form-item>
       <el-form-item label="商品主图" prop="spu_img">
         <!-- :on-preview="gettoken" -->
@@ -41,205 +51,13 @@
         >
           <el-button size="small" slot="trigger" type="primary">点击上传图片</el-button>
         </el-upload>
-        <small class="tipsText">* 建议图片为正方形，最多添加十张</small>
+        <small class="tipsText">* 建议图片为正方形</small>
       </el-form-item>
-      <el-form-item label="商品详情图" prop="spu_img">
-        <el-upload
-          multiple
-          class="upload-demo2"
-          ref="upload_2"
-          action="https://up-z0.qiniup.com"
-          :on-success="uploadSuccessimg"
-          list-type="picture-card"
-          :before-upload="changeMsg"
-          :on-remove="dellogo"
-          :on-change="checkupImg"
-          :data="postData"
-          :file-list="spuDetailList"
-          :on-error="uploadError"
-          accept=".png, .jpg"
-        >
-          <el-button size="small" slot="trigger" type="primary">点击上传图片</el-button>
-        </el-upload>
-        <small class="tipsText">* 建议图片为正方形，最多添加十张</small>
-        <el-form-item label="是否重新排序">
-          <el-switch
-            v-model="sortlogo"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            @change="generatingSort"
-          ></el-switch>
-          <el-transfer
-            v-if="sortlogo"
-            v-model="chooselogo"
-            :data="logoList"
-            target-order="push"
-            :titles="['排序列表', '新排序']"
-          ></el-transfer>
-        </el-form-item>
-      </el-form-item>
-
-      <el-form-item label="商品状态" prop>
-        <el-radio-group v-model="spuList.available">
-          <el-radio :label="true">上架</el-radio>
-          <el-radio :label="false">下架</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="商品品牌" class="item-input" prop="brand">
-        <el-input v-model="spuList.brand" size="small"></el-input>
-      </el-form-item>
-      <el-divider></el-divider>
-      <h3>型号价格</h3>
-      <!-- sku 详情-->
-      <el-table :data="skuList" border prop="product_attr" ref="form" style="width:1800px">
-        <el-table-column label="规格" prop="product_attr" width="180" height="100">
-          <template slot-scope="scope">
-            <el-input v-model="scope.row.product_attr"></el-input>
-          </template>
-        </el-table-column>
-        <el-table-column label="拼单价(元)" prop="sharing_price" width="180">
-          <template slot-scope="scope">
-            <el-input v-model="scope.row.sharing_price" @blur="fillSpu('sharing_price',scope.row)"></el-input>
-          </template>
-        </el-table-column>
-        <el-table-column label="单买价(元)" prop="single_price" width="180">
-          <template slot-scope="scope" prop="single_price">
-            <el-input v-model="scope.row.single_price" @blur="fillSpu('single_price',scope.row)"></el-input>
-          </template>
-        </el-table-column>
-        <el-table-column label="成本价(元)" prop="purchase_price" width="180">
-          <template slot-scope="scope" prop="purchase_price">
-            <el-input
-              v-model="scope.row.purchase_price"
-              @blur="fillSpu('purchase_price',scope.row)"
-            ></el-input>
-          </template>
-        </el-table-column>
-        <el-table-column label="货期" prop="goods_date" width="180">
-          <template slot-scope="scope" prop="goods_date">
-            <el-input v-model="scope.row.goods_date" @blur="fillSpu('goods_date',scope.row)"></el-input>
-          </template>
-        </el-table-column>
-        <el-table-column label="重量(非必填)" prop="weight" width="180">
-          <template slot-scope="scope" prop="weight">
-            <el-input v-model="scope.row.weight" @blur="fillSpu('weight',scope.row)"></el-input>
-          </template>
-        </el-table-column>
-        <el-table-column label="体积(非必填)" prop="volume" width="180">
-          <template slot-scope="scope" prop="volume">
-            <el-input v-model="scope.row.volume" @blur="fillSpu('volume',scope.row)"></el-input>
-          </template>
-        </el-table-column>
-        <el-table-column label="库存" width="180" prop="product_count">
-          <template slot-scope="scope" prop="product_count">
-            <el-input v-model="scope.row.product_count" @blur="fillSpu('product_count',scope.row)"></el-input>
-          </template>
-        </el-table-column>
-        <el-table-column label="商品型号" width="180" prop="product_item_no">
-          <template slot-scope="scope">
-            <el-input
-              v-model="scope.row.product_item_no"
-              @blur="fillSpu('product_item_no',scope.row)"
-            ></el-input>
-          </template>
-        </el-table-column>
-        <el-table-column label="图片" prop="product_img" width="300">
-          <template slot-scope="scope">
-            <img :src="scope.row.product_img" />
-            <!--v-show="img"-->
-            <el-upload
-              multiple
-              action="https://upload-z2.qiniup.com"
-              :before-upload="changeMsg"
-              :on-success="uploadSuccessSku"
-              :limit="1"
-              list-type="picture"
-              :data="postData"
-              :on-remove="delpic"
-              :on-error="uploadError"
-              accept=".png, .jpg"
-            >
-              <!--:show-file-list="false" -->
-              <el-button
-                size="small"
-                slot="trigger"
-                type="primary"
-                @click="getIndex(scope.$index)"
-              >点击上传图片</el-button>
-            </el-upload>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="220">
-          <template slot-scope="scope">
-            <!-- <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">保存</el-button>-->
-            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div style="margin-top: 20px;width:100%">
-        <el-form ref="operatorForm" :model="operatorForm" :inline="true">
-          <el-form-item>
-            <el-button @click="setTable(skuList)">新增规格</el-button>
-          </el-form-item>
-          <el-form-item>
-            <el-select v-model="operatorForm.operate" placeholder="批量操作">
-              <el-option label="拼单价" value="1"></el-option>
-              <el-option label="单买价" value="2"></el-option>
-              <el-option label="库存" value="3"></el-option>
-              <el-option label="商品型号" value="4"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-input v-model="operatorForm.input"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="submitOperator">确定</el-button>
-          </el-form-item>
-        </el-form>
-      </div>
-      <el-divider></el-divider>
-
-      <!--spu价格界定-->
-      <el-form-item label="拼单价(元)" class="item-input" prop="sale_price" style="margin-top:30px">
-        <el-input v-model="sale_price" :disabled="sale" size="small"></el-input>
-      </el-form-item>
-      <el-form-item label="单买价(元)" class="item-input" prop="single_price">
-        <el-input v-model="single_price" :disabled="sigle" size="small"></el-input>
-      </el-form-item>
-      <el-form-item label="库存" class="item-input" prop="count">
-        <el-input v-model="product_count" :disabled="count" size="small"></el-input>
-      </el-form-item>
-      <el-form-item label="商品型号" class="item-input" prop="product_attr">
-        <el-input v-model="product_item_no" :disabled="product" size="small"></el-input>
-      </el-form-item>
-      <el-divider></el-divider>
-      <h3>其他服务</h3>
-      <el-form-item label="货期" class="item-input" prop="goods_date">
-        <el-input v-model="spuList.goods_date" :disabled="product" size="small"></el-input>
-      </el-form-item>
-
-      <el-form-item label="质保期限" prop>
-        <el-radio-group v-model="spuList.warranty_period">
-          <el-radio label="1">1年</el-radio>
-          <el-radio label="3">3年</el-radio>
-          <el-radio label="99">永久</el-radio>
-          <el-radio :label="warranty">
-            <el-input style="width:80px" v-model="warranty" size="mini"></el-input>年
-          </el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="服务保障" prop>
-        <el-checkbox-group v-model="spuList.serve_item">
-          <el-checkbox label="正品行货" name="type"></el-checkbox>
-          <el-checkbox label="包退换" name="type"></el-checkbox>
-        </el-checkbox-group>
-      </el-form-item>
+ 
       <el-form-item>
         <el-button type="primary" @click="onSubmit">{{_id !=undefined ?"确认修改":"立即创建"}}</el-button>
         <!-- <el-button>取消</el-button> -->
       </el-form-item>
-      <el-form-item style="height:300px"></el-form-item>
     </el-form>
   </div>
 </template>
@@ -275,11 +93,18 @@ export default {
       goods_date: "", //货期输入信息
       warranty: "", //质保期限
       spuList: {
-        available: true,
-        spu_img: [],
-        goods_date: "2个工作日内",
-        warranty_period: "1",
-        serve_item: ["正品行货", "包退换"]
+        img: null,
+        name: null,
+        attr: null,
+        price1: null,
+         price2: null,
+         unit1: null,
+         unit2: null,
+        category_name: "冻品",
+        "category_id": "2",
+        brand: null,
+        purchase_price: null,
+        unit_rate: null
       },
       skuList: [{}],
       skuimgList: [], //sku图片回显
@@ -291,7 +116,7 @@ export default {
         category_id: [
           { required: true, message: "请输入分类", trigger: "change" }
         ],
-        name: [{ required: true, message: "请输入名称", trigger: "blur" }],
+        name: [{ required: true, message: "请输入", trigger: "blur" }],
         spu_img: [{ required: true, message: "请选择图片", trigger: "change" }],
         show: [{ required: true, message: "请勾选", trigger: "change" }],
         set_sold: [{ required: true, message: "请填写此项", trigger: "blur" }],
@@ -656,94 +481,19 @@ export default {
     },
     onSubmit() {
       //表单提交
-      this.spuList.sale_price = this.sale_price; //底部四个输入框赋值
-      this.spuList.single_price = this.single_price;
-      this.spuList.count = this.product_count;
-      this.spuList.product_attr = this.product_item_no;
-      let sku = [...this.skuList];
-      let spu = this.spuList;
-      let data;
-      if (!checkForm(sku)) {
-        //验证是否有空值并为价格*100
-        this.$message({
-          message: "sku存在未填写",
-          duration: 3000,
-          type: "error"
-        });
-        return;
-      }
-      if (!checkForm(spu)) {
-        //验证是否有空值为价格*100
-        this.$message({
-          message: "spu存在未填写",
-          duration: 3000,
-          type: "error"
-        });
-        return;
-      }
-      if (
-        this.spuList.category_3 < 0 ||
-        this.spuList.category_3 == undefined ||
-        this.spuList.category_3 == "" ||
-        this.spuList.category_3 == null
-      ) {
-        //验证是否填写分类
-        this.$message({
-          message: "请填写正确的第三级分类",
-          duration: 3000,
-          type: "error"
-        });
-        return;
-      }
-      if (sku[0].product_attr == undefined) {
-        //允许sku不填写
-        sku = [];
-      }
-      //修改图片排序
-      if (this.sortlogo) {
-        let list = []; //临时存储图片数组
-
-        this.spuList.spu_img.forEach((item, index) => {
-          //放置图片进入临时数组
-          if (item.img_type == 2) {
-            list.push(item);
-          }
-        });
-        list.forEach((item, index) => {
-          //删除原有图片
-          this.spuList.spu_img.forEach((res, num) => {
-            if (res.img_type == 2 && item.img_url == res.img_url) {
-              this.spuList.spu_img.splice(num, 1);
-            }
+      for(let i in this.spuList){
+        if(!this.spuList[i]){
+           this.$message({
+            message: "请完善商品信息",
+            duration: 3000,
+            type: "error"
           });
-        });
-        //获取穿梭框右边的值
-        this.chooselogo.forEach((item, index) => {
-          //置换顺序放入原数组
-          list.forEach((res, num) => {
-            if (item == res.index) {
-              this.spuList.spu_img.push(res);
-            }
-          });
-        });
+          return;
+        }
       }
-      if (this.spuList._id != undefined) {
-        //更新信息
-        // spu= delForm(spu)// 删除spu多余空字段
-        // sku = delForm(sku)//删除sku多余空字段
-        data = {
-          method: "update",
-          Spu: spu,
-          Sku: sku
-        };
-      } else {
-        data = {
-          method: "post",
-          Spu: spu,
-          Sku: sku
-        };
-      }
-      addGoods(data).then(res => {
+      this.spuList.price1 =  this.spuList.price1 * 100
+      this.spuList.price2 =  this.spuList.price2 * 100
+      addGoods(this.spuList).then(res => {
         if (res.data.ret == "0") {
           this.$alert("添加成功", {
             confirmButtonText: "确定",
@@ -848,6 +598,7 @@ export default {
       });
     },
     changeMsg(file) {
+      console.log("Wwwwwwwwwwwwwww")
       //上传前回调
       let _that = this;
       let type = false; //回调参数，before -upload 返回 为false 上传终止，利用特性解决获取token异步问题
@@ -874,12 +625,7 @@ export default {
     uploadSuccesslogo(res, file, filelist) {
       //上传成功主图
       var url = "http://q7653j6x1.bkt.clouddn.com/" + res.key; //图片地址拼接
-      this.spuList.spu_img.push({
-        img_url: url,
-        name: res.key,
-        img_type: 1 //1是商品banner 2是商品详情
-      });
-      (file.url = url), (file.img_type = 1);
+      this.spuList.img = url
     },
     getIndex(index) {
       //点击事件发生获取当前选择行
@@ -900,14 +646,7 @@ export default {
       });
     },
     checkupImg(flie) {
-      if (this.spuList.spu_img.length > 20) {
-        this.message({
-          message: "图片文件过多",
-          duration: 3000,
-          type: "error"
-        });
-        return false;
-      }
+     
     },
     delpic(file, filelist) {
       //删除sku图片

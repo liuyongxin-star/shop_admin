@@ -14,13 +14,10 @@
         <span class="logo-title">管理后台</span>
       </el-menu-item>
       <template v-for="(item,index) in routeArr">
-        <el-menu-item :index="item.path" :key="index" v-if="item.path === '/'">
-          <i class="title-icon" :style="{backgroundImage:'url('+item.icon+')'}"></i>
-          <span>{{item.name}}</span>
-        </el-menu-item>
-        <el-submenu v-else :index="item.path" :key="index">
+    
+        <el-submenu v-if="item.path !== '/'" :index="item.path" :key="index">
           <template slot="title" v-if="item.path !== '/'">
-             <i class="title-icon" :style="{backgroundImage:'url('+item.icon+')'}"></i>
+             <i  :class="item.icon"></i>
             <span>{{item.name}}</span>
           </template>
 

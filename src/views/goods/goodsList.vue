@@ -14,65 +14,12 @@
           <el-row :gutter="20" align="middle">
             <el-col :span="5" :md="8">
               <el-form-item label="商品名称" prop="name">
-                <el-input placeholder="商品名称" v-model="searchForm.name" @keyup.enter.native="search"></el-input>
+                <el-input placeholder="商品名称" v-model.trim="searchForm.name" @keyup.enter.native="search"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="5" :md="8">
-              <el-form-item label="商品货号" prop="name">
-                <el-input
-                  placeholder="商品货号"
-                  v-model="searchForm.spu_id"
-                  @keyup.enter.native="search"
-                ></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="5" :md="8">
-              <el-form-item label="商品分类" class="item-input">
-                <el-cascader
-                  :show-all-levels="false"
-                  prop="name"
-                  ref="myCategory"
-                  :placeholder="defaultname"
-                  v-model="category_id"
-                  @change="onCategoryChange"
-                  :props="classify"
-                ></el-cascader>
-                <!-- 多级下拉菜单-->
-              </el-form-item>
-            </el-col>
+       
           </el-row>
           <el-row :gutter="20" align="middle">
-            <el-col :span="5" :md="8">
-              <el-form-item label="商品品牌" prop="brand">
-                <el-select placeholder="商品品牌" v-model="searchForm.brand">
-                  <!--品牌遍历列表-->
-                  <el-option
-                    :label="item.name"
-                    :value="item.brand_id"
-                    v-for="item in classifyList"
-                    :key="item.brand_id"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="5" :md="8">
-              <el-form-item label="上架状态" prop="available">
-                <el-select placeholder="上架状态" v-model="searchForm.available">
-                  <el-option label="全部" value></el-option>
-                  <el-option label="上架" value="true"></el-option>
-                  <el-option label="下架" value="false"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="5" :md="8">
-              <el-form-item label="会员商品" prop="vip_area">
-                <el-select placeholder="是否会员商品" v-model="searchForm.vip_area">
-                  <el-option label="全部" value></el-option>
-                  <el-option label="会员商品" value="true"></el-option>
-                  <el-option label="非会员商品" value="false"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
             <el-col :span="5" :md="8" class="search-button">
               <el-form-item>
                 <el-button @click="resetForm('searchForm')">重置</el-button>
@@ -84,21 +31,7 @@
       </div>
     </div>
     <div class="add-btn-group">
-      <el-form ref="operatorForm" :model="operatorForm" :inline="true">
-        <el-form-item>
-          <el-select v-model="operatorForm.operate" placeholder="批量操作">
-            <el-option label="上架" value="1"></el-option>
-            <el-option label="下架" value="2"></el-option>
-            <el-option label="设为会员商品" value="3"></el-option>
-            <el-option label="取消会员商品" value="4"></el-option>
-            <el-option label="批量删除" value="5"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitOperator">确定</el-button>
-        </el-form-item>
         <el-button type="primary" @click="editOrder">添加商品</el-button>
-      </el-form>
     </div>
     <!-- 数据列表 -->
     <div class="order-list">
@@ -117,34 +50,26 @@
           </template>
         </el-table-column>
         <el-table-column prop="name" label="商品名称"></el-table-column>
-        <el-table-column prop="item_price" label="划线价格">
+        <el-table-column prop="brand" label="商品品牌"></el-table-column>
+        <el-table-column prop="item_price" label="售价1">
           <template slot-scope="scope">
-            <span>￥{{scope.row.item_price/100}}</span>
+            <span>￥{{scope.row.price1/100}}{{'/' + scope.row.unit1}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="sale_price" label="真实售价">
+        <el-table-column prop="sale_price" label="售价2">
           <template slot-scope="scope">
-            <span>￥{{scope.row.sale_price/100}}</span>
+            <span>￥{{scope.row.price2/100}}{{'/' + scope.row.unit2}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="spu_id" label="商品编码"></el-table-column>
-        <el-table-column prop="available" label="是否上架">
+           <el-table-column prop="item_price" label="进货价">
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.available" @change="isShow(scope.row)"></el-switch>
-          </template>
-        </el-table-column>
-        <el-table-column prop="vip_area" label="是否会员商品">
-          <template slot-scope="scope">
-            <el-switch v-model="scope.row.vip_area" @change="isVIP(scope.row)"></el-switch>
+            <span>￥{{scope.row.purchase_price/100}}</span>
           </template>
         </el-table-column>
         <!-- <el-table-column prop="importance" label="商品推荐"></el-table-column> -->
         <!-- "scope." -->
-        <el-table-column prop="set_sold" label="预设销量"></el-table-column>
-        <el-table-column prop="real_sold" label="真实销量"></el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
-            <el-button size="mini" @click="editOrder(scope.row._id)">编辑</el-button>
             <el-button size="mini" @click="removeOrder(scope.row._id)">删除</el-button>
           </template>
         </el-table-column>
@@ -275,7 +200,7 @@ export default {
 
         this.goodsList = resp.data.data
 
-        this.total = Math.ceil(resp.data.total_count / this.searchForm.limit) 
+        this.total = resp.data.total_count
       })
     },
     onCategoryChange() {
@@ -382,8 +307,7 @@ export default {
     //删除
     removeOrder(_id) {
       let data = {
-        spus: _id,
-        method: 'delete'
+        product_id: _id,
       }
       this.$alert('是否确认删除', {
         confirmButtonText: '确定',

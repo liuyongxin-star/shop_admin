@@ -25,28 +25,18 @@ import setting from './module/setting'
 import login from './module/login'
 // 资金管理
 import fund from './module/fund'
-import{ getSessionToken }from '@/utils/auth'
+import { getSessionToken } from '@/utils/auth'
 // if (!window.VueRouter) Vue.use(VueRouter)  //重复点击菜单不重复加载路由
 const routes = [
   {
     path: '/',
-    name: '首页',
-    icon:'https://qn.ygp.sany.com.cn/icon_home_default.png',
-    component: Layout
+    redirect: "/product/goodsList",
+    meta:{
+      isShow: false
+    }
   },
-  coupon,
   product,
-  order,
-  account,
-  distribution,
-  member,
-  shop,
-  refund,
-  statistics,
-  setting,
-  login,
-  fund
-
+  order
 ]
 
 const router = new VueRouter({

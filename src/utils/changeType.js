@@ -34,12 +34,12 @@ export default {
     }],
     //订单分类
     _orderType: [{
-            type: '1',
+            type: '未付款',
             name: '单独购买'
         },
         {
-            type: '2',
-            name: '发起拼团'
+            type: 'success_paid',
+            name: '已支付'
         },
         // {
         //     type: '3',
@@ -63,47 +63,13 @@ export default {
 ],
     //订单状态
     _orderState: [{
-            type: '1',
-            name: '待付款'
-        },
-        {
-            type: '2',
-            name: '待成团'
-        },
-        {
-            type: '3',
-            name: '待发货'
-        },
-        {
-            type: '4',
-            name: '待收货'
-        },
-        {
-            type: '5',
-            name: '交易成功'
-        },
-        {
-            type: '6',
-            name: '交易取消'
-        }, {
-            type: '7',
-            name: '售后中'  //7-10
-        }, {
-            type: '8',
-            name: '退款待审核'
-        }, {
-            type: '9',
-            name: '卖家已同意，请退货'
-        }, {
-            type: '10',
-            name: '退货中，等待卖家确认'
-        }, {
-            type: '11',
-            name: '退款成功'
-        }, {
-            type: '12',
-            name: '退款失败'
-        }
+        type: 'unpaid',
+        name: '未付款'
+    },
+    {
+        type: 'success_paid',
+        name: '已支付'
+    },
     ],
     //申请状态
     _applyState: [{

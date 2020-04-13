@@ -35,37 +35,17 @@
               :md="6"
             >
               <el-form-item
-                label="收货人"
+                label="用户账号"
                 prop="consignee"
               >
                 <el-input
-                  placeholder="收货人姓名/手机号"
+                  placeholder="用户账号"
                   v-model="searchForm.consignee"
                     @keyup.enter.native='fetchDate'
                 ></el-input>
               </el-form-item>
             </el-col>
-            <el-col
-              :span="6"
-              :md="10"
-            >
-              <el-form-item
-                label="订单提交时间段"
-                prop="create_time"
-                label-width="110px"
-              >
-                <el-date-picker
-                  v-model="time_range"
-                  type="datetimerange"
-                  value-format="timestamp"
-                  :default-time="['00:00:00', '23:59:59']"
-                  :picker-options="pickerOptions"
-                  range-separator="至"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
-                ></el-date-picker>
-              </el-form-item>
-            </el-col>
+         
           </el-row>
           <el-row
             :gutter="20"
@@ -92,27 +72,7 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col
-              :span="5"
-              :md="6"
-            >
-              <el-form-item
-                label="订单分类"
-                prop="order_type"
-              >
-                <el-select
-                  placeholder="订单分类"
-                  v-model="searchForm.order_type"
-                >
-                  <el-option
-                    :label="item.name"
-                    :value="item.type"
-                    v-for="item in orderType"
-                    :key="item.type"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
+        
             <el-col
               :span="6"
               :md="9"
@@ -125,14 +85,6 @@
                     type="primary"
                     @click="searchOrder"
                   >查询</el-button>
-                  <el-button
-                    type="primary"
-                    @click="exportRangeData"
-                  >导出时间段表格</el-button>
-                  <el-button
-                    type="primary"
-                    @click="exportSortData"
-                  >分供应商导出表格</el-button>
                 </div>
               </el-form-item>
             </el-col>
@@ -140,46 +92,7 @@
         </el-form>
       </div>
     </div>
-    <div class="operator-box">
-      <!-- 批量操作 -->
-      <el-form
-        ref="operatorForm"
-        :model="operatorForm"
-        :inline="true"
-      >
-        <el-form-item>
-          <el-select
-            v-model="operatorForm.operate"
-            placeholder="批量操作"
-          >
-            <el-option
-              label="批量发货"
-              value="1"
-            ></el-option>
-            <el-option
-              label="关闭订单"
-              value="2"
-            ></el-option>
-            <el-option
-              label="删除订单"
-              value="3"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            type="primary"
-            @click="submitOperator"
-          >确定</el-button>
-        </el-form-item>
-      </el-form>
-      <el-button
-        type="primary"
-        size="small"
-        @click="exportAsExcel"
-        class="export-btn"
-      >导出表格</el-button>
-    </div>
+
     <div class="order-list">
       <el-table
         :data="orderList"
@@ -221,15 +134,7 @@
             <span>￥{{scope.row.price_info.product_total_price|fixedMoney}}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="order_type"
-          label="订单类型"
-          sortable
-        >
-          <template slot-scope="scope">
-            <span>{{scope.row.order_type|orderTypeFilter}}</span>
-          </template>
-        </el-table-column>
+      
         <el-table-column
           prop='pay_manner'
           label="支付方式"
@@ -239,11 +144,7 @@
             <span>{{scope.row.pay_manner?scope.row.pay_manner:'微信支付'}}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="store_name"
-          label="供应商"
-          sortable
-        ></el-table-column>
+    
         <el-table-column
           prop="order_status"
           label="订单状态"
@@ -253,15 +154,25 @@
             <span>{{scope.row.order_status|orderStateFilter}}</span>
           </template>
         </el-table-column>
+           <el-table-column
+          prop="order_status"
+          label="收货地址"
+          sortable
+        >
+          <template slot-scope="scope">
+            <span>{{scope.row.address}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           label="操作"
-          width="200"
+          width="100"
         >
           <template slot-scope="scope">
             <el-button
               size="mini"
               @click="showOrder(scope.row.order_id)"
-            >查看订单</el-button>
+              v-if="scope.row.order_status == 'success_paid' && !scope.row.send"
+            >发货</el-button>
             <el-button
               size="mini"
               type="danger"
@@ -524,7 +435,7 @@ import {
   addFileToZip,
   dealWithData
 } from '@/utils/methods'
-import { searchOrder } from '@/api/order'
+import { searchOrder,sendOrder } from '@/api/order'
 import FileSaver from 'file-saver'
 import JSZip from 'jszip'
 export default {
@@ -573,13 +484,12 @@ export default {
       let searchObj = {
         start_time: this.time_range[0],
         stop_time: this.time_range[1],
-        is_inquire_all:false,
         ...this.searchForm
       }
       searchOrder(format_objKey(searchObj)).then(res => {
         const resp = res.data
-        this.orderList = resp.data
-        // this.total = resp.data.count
+        this.orderList = resp.data.data
+        this.total = resp.data.total_count
       })
     },
     //格式化获取数据
@@ -702,14 +612,20 @@ export default {
     handleSelectionChange(val) {
       this.selectArr = val
     },
-    //查看订单详情
+    //发货
     showOrder(order_id) {
-      this.$router.push({
-        path: '/order/orderDetail',
-        query: {
-          order_id
-        }
-      })
+      let data = {
+        order_id: order_id
+      }
+    sendOrder(data).then(res=>{
+      console.log(res)
+      if(res.data.ret == 0){
+          this.$message({
+          message: '发货成功',
+          type: 'success'
+        });
+      }
+    })
     },
     //订单发货
     deliverOrder(id) {

@@ -11,6 +11,15 @@ export const searchOrder = (filters = {}) => {
     })
 }
 
+export const sendOrder = (filters = {}) => {
+    return request({
+        url: 'mgr/order',
+        method: 'post',
+        data: {
+            filters
+        }
+    })
+}
 //订单详情
 export const getOrderDetail = (order_id) => {
     return request({
@@ -49,7 +58,7 @@ export const getdeliverList = (order_id) => {
 export const delieverGoods = (filters) => {
     // let data={...filters}
     return request({
-        // url:'http://111.229.241.145:30050/api/order/backstage',
+        // url:'https://www.dongsanchi.com.cn/api/order/backstage',
         url: 'order_v2/backstage',
         method: 'POST',
         data: {

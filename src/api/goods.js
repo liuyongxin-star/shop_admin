@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-// const baseURL='http://111.229.241.145:30050'
+// const baseURL='https://www.dongsanchi.com.cn'
 
 
 //测试
@@ -34,8 +34,8 @@ export const searchSku = (filters={}) =>{
 //添加商品
 export const addGoods = (filters={}) =>{
     return request({
-        url:'product_api',
-        method:'POST',
+        url:'mgr/product_info',
+        method:'post',
         data:{
             filters
         }       
@@ -44,7 +44,7 @@ export const addGoods = (filters={}) =>{
 //删除商品
 export const deleteGoods=(data)=>{
     return request({
-        url:'spu_api',
+        url:'mgr/product_del',
         method:'POST',
         data:{
             filters:{

@@ -13,22 +13,13 @@ const invoice_detail = () => import('@/views/order/invoice/invoice_detail')
 const order = {
 	path: '/order',
 	name: '订单中心',
-	icon: 'https://qn.ygp.sany.com.cn/icon_oder_selected.png',
+	icon: 'el-icon-s-order',
 	component: Layout,
 	children: [{
 			path: 'orderList',
 			component: orderList,
 			meta: {
 				title: '订单列表',
-				keepAlive: false,
-				isShow: true,
-				parent: '订单中心'
-			}
-		}, {
-			path: 'invoiceList',
-			component: invoiceList,
-			meta: {
-				title: '发票管理',
 				keepAlive: false,
 				isShow: true,
 				parent: '订单中心'
